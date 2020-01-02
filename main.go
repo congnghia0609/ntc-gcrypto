@@ -14,7 +14,6 @@ import (
 func main() {
 	// creates a set of shares
 	s := "nghiatcxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-	fmt.Println("secret:", s)
 	arr, err := sss.Create(3, 6, s)
 	if err != nil {
 		fmt.Println(err)
@@ -27,12 +26,13 @@ func main() {
 		fmt.Printf("shares[%d]: %s\n", i, arr[i])
 	}
 
+	fmt.Println("\nsecret:", s)
 	// combines shares into secret
-	fmt.Println("\ncombines shares 1")
+	fmt.Println("combines shares 1")
 	s1, err := sss.Combine(arr[:3])
-	fmt.Println(s1)
+	fmt.Println("secret:", s1)
 
 	fmt.Println("combines shares 2")
 	s2, err := sss.Combine(arr[3:])
-	fmt.Println(s2)
+	fmt.Println("secret:", s2)
 }

@@ -16,18 +16,18 @@ import (
 	"strings"
 )
 
-// prime 256-bit big.Int
+// PRIME 256-bit big.Int
 const (
 	DefaultPrimeStr = "115792089237316195423570985008687907853269984665640564039457584007913129639747"
 )
-// var prime *big.Int
-var prime,_ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
+// var PRIME *big.Int
+var PRIME,_ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
 
 /**
- * Returns a random number from the range (0, prime-1) inclusive
+ * Returns a random number from the range (0, PRIME-1) inclusive
 **/
 func random() *big.Int {
-	result := big.NewInt(0).Set(prime)
+	result := big.NewInt(0).Set(PRIME)
 	result = result.Sub(result, big.NewInt(1))
 	result, _ = rand.Int(rand.Reader, result)
 	return result
@@ -86,7 +86,7 @@ func evaluatePolynomial(polynomial []*big.Int, value *big.Int) *big.Int {
 	for s := last - 1; s >= 0; s-- {
 		result = result.Mul(result, value)
 		result = result.Add(result, polynomial[s])
-		result = result.Mod(result, prime)
+		result = result.Mod(result, PRIME)
 	}
 
 	return result
@@ -147,21 +147,21 @@ func fromBase64(number string) *big.Int {
 }
 
 /**
- * Computes the multiplicative inverse of the number on the field prime; more
+ * Computes the multiplicative inverse of the number on the field PRIME; more
  * specifically, number * inverse == 1; Note: number should never be zero
 **/
 func modInverse(number *big.Int) *big.Int {
 	copy := big.NewInt(0).Set(number)
-	copy = copy.Mod(copy, prime)
-	pcopy := big.NewInt(0).Set(prime)
+	copy = copy.Mod(copy, PRIME)
+	pcopy := big.NewInt(0).Set(PRIME)
 	x := big.NewInt(0)
 	y := big.NewInt(0)
 
 	copy.GCD(x, y, pcopy, copy)
 
-	result := big.NewInt(0).Set(prime)
+	result := big.NewInt(0).Set(PRIME)
 
 	result = result.Add(result, y)
-	result = result.Mod(result, prime)
+	result = result.Mod(result, PRIME)
 	return result
 }

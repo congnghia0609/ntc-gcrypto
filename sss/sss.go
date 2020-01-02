@@ -116,9 +116,6 @@ func Combine(shares []string) (string, error) {
 	// and size of each share (number of parts in the secret).
 	var secrets [][][]*big.Int = make([][][]*big.Int, len(shares))
 
-	// Set constant prime
-	prime, _ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
-
 	// For each share...
 	for i := range shares {
 		// ...ensure that it is valid...
@@ -164,10 +161,10 @@ func Combine(shares []string) (string, error) {
 					added = added.Sub(origin, current)
 
 					numerator = numerator.Mul(numerator, negative)
-					numerator = numerator.Mod(numerator, prime)
+					numerator = numerator.Mod(numerator, PRIME)
 
 					denominator = denominator.Mul(denominator, added)
-					denominator = denominator.Mod(denominator, prime)
+					denominator = denominator.Mod(denominator, PRIME)
 				}
 			}
 
@@ -179,7 +176,7 @@ func Combine(shares []string) (string, error) {
 
 			// LPI sum
 			secret[j] = secret[j].Add(secret[j], working)
-			secret[j] = secret[j].Mod(secret[j], prime)
+			secret[j] = secret[j].Mod(secret[j], PRIME)
 		}
 	}
 
@@ -197,9 +194,6 @@ func Combine(shares []string) (string, error) {
  * Returns only success/failure (bool)
 **/
 func IsValidShare(candidate string) bool {
-	// Set constant prime across the package
-	//prime, _ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
-
 	if len(candidate)%88 != 0 {
 		return false
 	}
@@ -208,7 +202,7 @@ func IsValidShare(candidate string) bool {
 	for j := 0; j < count; j++ {
 		part := candidate[j*44 : (j+1)*44]
 		decode := fromBase64(part)
-		if decode.Cmp(big.NewInt(0)) == -1 || decode.Cmp(prime) == 1 {
+		if decode.Cmp(big.NewInt(0)) == -1 || decode.Cmp(PRIME) == 1 {
 			return false
 		}
 	}
