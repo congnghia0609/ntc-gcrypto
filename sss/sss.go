@@ -198,7 +198,7 @@ func Combine(shares []string) (string, error) {
 **/
 func IsValidShare(candidate string) bool {
 	// Set constant prime across the package
-	prime, _ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
+	//prime, _ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
 
 	if len(candidate)%88 != 0 {
 		return false
