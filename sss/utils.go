@@ -1,3 +1,8 @@
+/**
+ *
+ * @author nghiatc
+ * @since Jan 2, 2020
+ */
 package sss
 
 import (
@@ -11,7 +16,12 @@ import (
 	"strings"
 )
 
-var prime *big.Int
+// prime 256-bit big.Int
+const (
+	DefaultPrimeStr = "115792089237316195423570985008687907853269984665640564039457584007913129639747"
+)
+// var prime *big.Int
+var prime,_ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
 
 /**
  * Returns a random number from the range (0, prime-1) inclusive
@@ -31,7 +41,7 @@ func random() *big.Int {
 func splitByteToInt(secret []byte) []*big.Int {
 	hex_data := hex.EncodeToString(secret)
 	count := int(math.Ceil(float64(len(hex_data)) / 64.0))
-	fmt.Println("secret count:", count)
+	fmt.Println("secret part count:", count)
 
 	result := make([]*big.Int, count)
 

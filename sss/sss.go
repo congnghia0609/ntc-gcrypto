@@ -1,3 +1,8 @@
+/**
+ *
+ * @author nghiatc
+ * @since Jan 2, 2020
+ */
 package sss
 
 import (
@@ -9,10 +14,6 @@ import (
 var (
 	ErrCannotRequireMoreShares = errors.New("cannot require more shares then existing")
 	ErrOneOfTheSharesIsInvalid = errors.New("one of the shares is invalid")
-)
-
-const (
-	DefaultPrimeStr = "115792089237316195423570985008687907853269984665640564039457584007913129639747"
 )
 
 /**
@@ -30,9 +31,6 @@ func Create(minimum int, shares int, raw string) ([]string, error) {
 
 	// Convert the secret to its respective 256-bit big.Int representation
 	var secret []*big.Int = splitByteToInt([]byte(raw))
-
-	// Set constant prime across the package
-	prime, _ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
 
 	// List of currently used numbers in the polynomial
 	var numbers []*big.Int = make([]*big.Int, 0)
@@ -94,9 +92,9 @@ func Create(minimum int, shares int, raw string) ([]string, error) {
 
 			// ...add it to results...
 			result[i] += toBase64(secrets[i][j][0])
-			fmt.Printf("x[%d][%d]: %s\n", i, j, secrets[i][j][0].String())
+			fmt.Printf("x[share-%d][part-%d]: %s\n", i, j, secrets[i][j][0].String())
 			result[i] += toBase64(secrets[i][j][1])
-			fmt.Printf("y[%d][%d]: %s\n", i, j, secrets[i][j][1].String())
+			fmt.Printf("y[share-%d][part-%d]: %s\n", i, j, secrets[i][j][1].String())
 		}
 	}
 
