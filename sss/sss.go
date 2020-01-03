@@ -49,6 +49,7 @@ func Create(minimum int, shares int, raw string) ([]string, error) {
 		polynomial[i][0] = secret[i]
 
 		for j := range polynomial[i][1:] {
+			//fmt.Println("j =", j)
 			// Each coefficient should be unique
 			number := random()
 			for inNumbers(numbers, number) {
@@ -59,6 +60,8 @@ func Create(minimum int, shares int, raw string) ([]string, error) {
 			polynomial[i][j+1] = number
 		}
 	}
+	fmt.Print(polynomial)
+	fmt.Println("")
 
 	// Create the secrets object; this holds the (x, y) points of each share.
 	// Again, because secret is an array, each share could have multiple parts
@@ -139,12 +142,13 @@ func Combine(shares []string) (string, error) {
 	}
 
 	// Use Lagrange Polynomial Interpolation (LPI) to reconstruct the secret.
-	// For each part of the secert (clearest to iterate over)...
+	// For each part of the secret (clearest to iterate over)...
 	var secret []*big.Int = make([]*big.Int, len(secrets[0]))
 	for j := range secret {
 		secret[j] = big.NewInt(0)
 		// ...and every share...
 		for i := range secrets { // LPI sum loop
+			//fmt.Println("i:", i)
 			// ...remember the current x and y values...
 			origin := secrets[i][j][0]
 			originy := secrets[i][j][1]

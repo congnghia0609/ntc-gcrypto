@@ -28,11 +28,15 @@ func main() {
 
 	fmt.Println("\nsecret:", s)
 	// combines shares into secret
-	fmt.Println("combines shares 1")
 	s1, err := sss.Combine(arr[:3])
+	fmt.Println("combines shares 1 length =", len(arr[:3]))
 	fmt.Println("secret:", s1)
 
-	fmt.Println("combines shares 2")
 	s2, err := sss.Combine(arr[3:])
+	fmt.Println("combines shares 2 length =", len(arr[3:]))
 	fmt.Println("secret:", s2)
+
+	s3, err := sss.Combine(arr[1:5])
+	fmt.Println("combines shares 3 length =", len(arr[1:5]))
+	fmt.Println("secret:", s3)
 }
