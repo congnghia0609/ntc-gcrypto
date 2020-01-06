@@ -7,7 +7,6 @@ package sss
 
 import (
 	"errors"
-	"fmt"
 	"math/big"
 )
 
@@ -60,8 +59,8 @@ func Create(minimum int, shares int, raw string) ([]string, error) {
 			polynomial[i][j+1] = number
 		}
 	}
-	fmt.Print(polynomial)
-	fmt.Println("")
+	//fmt.Print(polynomial)
+	//fmt.Println("")
 
 	// Create the secrets object; this holds the (x, y) points of each share.
 	// Again, because secret is an array, each share could have multiple parts
