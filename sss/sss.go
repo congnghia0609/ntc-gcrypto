@@ -16,8 +16,8 @@ var (
 )
 
 /**
- * Returns a new arary of secret shares (encoding x,y pairs as base64 strings)
- * created by Shamir's Secret Sharing Algorithm requring a minimum number of
+ * Returns a new array of secret shares (encoding x,y pairs as base64 strings)
+ * created by Shamir's Secret Sharing Algorithm requiring a minimum number of
  * share to recreate, of length shares, from the input secret raw as a string
 **/
 func Create(minimum int, shares int, raw string) ([]string, error) {
