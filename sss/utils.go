@@ -57,6 +57,25 @@ func splitByteToInt(secret []byte) []*big.Int {
 	return result
 }
 
+func splitByteToInt2(secret []byte) []*big.Int {
+	hex_data := hex.EncodeToString(secret)
+	count := int(math.Ceil(float64(len(hex_data)) / 64.0))
+	fmt.Println("secret part count:", count)
+
+	result := make([]*big.Int, count)
+
+	for i := 0; i < count; i++ {
+		if (i+1)*64 < len(hex_data) {
+			result[i], _ = big.NewInt(0).SetString(hex_data[i*64:(i+1)*64], 16)
+		} else {
+			data := strings.Join([]string{strings.Repeat("0", 64-(len(hex_data)-i*64)), hex_data[i*64:]}, "")
+			result[i], _ = big.NewInt(0).SetString(data, 16)
+		}
+	}
+
+	return result
+}
+
 /**
  * Converts an array of big.Ints to the original byte array, removing any
  * least significant nulls
@@ -70,6 +89,19 @@ func mergeIntToByte(secret []*big.Int) []byte {
 
 	result, _ := hex.DecodeString(hex_data)
 	result = bytes.TrimRight(result, "\x00")
+
+	return result
+}
+
+func mergeIntToByte2(secret []*big.Int) []byte {
+	var hex_data = ""
+	for i := range secret {
+		tmp := fmt.Sprintf("%x", secret[i])
+		hex_data += strings.Join([]string{strings.Repeat("0", (64 - len(tmp))), tmp}, "")
+	}
+
+	result, _ := hex.DecodeString(hex_data)
+	result = bytes.TrimLeft(result, "\x00")
 
 	return result
 }
@@ -114,6 +146,7 @@ func toBase64(number *big.Int) string {
 	for i := 0; len(hexdata) < 64; i++ {
 		hexdata = "0" + hexdata
 	}
+	//fmt.Println("hexdata:", hexdata)
 	bytedata, success := hex.DecodeString(hexdata)
 	if success != nil {
 		fmt.Println("Error!")
@@ -122,6 +155,15 @@ func toBase64(number *big.Int) string {
 		fmt.Println(success)
 	}
 	return base64.URLEncoding.EncodeToString(bytedata)
+}
+
+func toHex(number *big.Int) string {
+	hexdata := fmt.Sprintf("%x", number)
+	for i := 0; len(hexdata) < 64; i++ {
+		hexdata = "0" + hexdata
+	}
+	//fmt.Println("hexdata:", hexdata)
+	return hexdata
 }
 
 /**
@@ -139,6 +181,15 @@ func fromBase64(number string) *big.Int {
 
 	hexdata := hex.EncodeToString(bytedata)
 	result, ok := big.NewInt(0).SetString(hexdata, 16)
+	if ok == false {
+		return big.NewInt(-1)
+	}
+
+	return result
+}
+
+func fromHex(number string) *big.Int {
+	result, ok := big.NewInt(0).SetString(number, 16)
 	if ok == false {
 		return big.NewInt(-1)
 	}
