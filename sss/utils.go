@@ -41,7 +41,7 @@ func random() *big.Int {
 func splitByteToInt(secret []byte) []*big.Int {
 	hex_data := hex.EncodeToString(secret)
 	count := int(math.Ceil(float64(len(hex_data)) / 64.0))
-	fmt.Println("secret part count:", count)
+	//fmt.Println("secret part count:", count)
 
 	result := make([]*big.Int, count)
 
@@ -57,24 +57,24 @@ func splitByteToInt(secret []byte) []*big.Int {
 	return result
 }
 
-func splitByteToInt2(secret []byte) []*big.Int {
-	hex_data := hex.EncodeToString(secret)
-	count := int(math.Ceil(float64(len(hex_data)) / 64.0))
-	fmt.Println("secret part count:", count)
-
-	result := make([]*big.Int, count)
-
-	for i := 0; i < count; i++ {
-		if (i+1)*64 < len(hex_data) {
-			result[i], _ = big.NewInt(0).SetString(hex_data[i*64:(i+1)*64], 16)
-		} else {
-			data := strings.Join([]string{strings.Repeat("0", 64-(len(hex_data)-i*64)), hex_data[i*64:]}, "")
-			result[i], _ = big.NewInt(0).SetString(data, 16)
-		}
-	}
-
-	return result
-}
+//func splitByteToInt2(secret []byte) []*big.Int {
+//	hex_data := hex.EncodeToString(secret)
+//	count := int(math.Ceil(float64(len(hex_data)) / 64.0))
+//	fmt.Println("secret part count:", count)
+//
+//	result := make([]*big.Int, count)
+//
+//	for i := 0; i < count; i++ {
+//		if (i+1)*64 < len(hex_data) {
+//			result[i], _ = big.NewInt(0).SetString(hex_data[i*64:(i+1)*64], 16)
+//		} else {
+//			data := strings.Join([]string{strings.Repeat("0", 64-(len(hex_data)-i*64)), hex_data[i*64:]}, "")
+//			result[i], _ = big.NewInt(0).SetString(data, 16)
+//		}
+//	}
+//
+//	return result
+//}
 
 /**
  * Converts an array of big.Ints to the original byte array, removing any
@@ -93,18 +93,18 @@ func mergeIntToByte(secret []*big.Int) []byte {
 	return result
 }
 
-func mergeIntToByte2(secret []*big.Int) []byte {
-	var hex_data = ""
-	for i := range secret {
-		tmp := fmt.Sprintf("%x", secret[i])
-		hex_data += strings.Join([]string{strings.Repeat("0", (64 - len(tmp))), tmp}, "")
-	}
-
-	result, _ := hex.DecodeString(hex_data)
-	result = bytes.TrimLeft(result, "\x00")
-
-	return result
-}
+//func mergeIntToByte2(secret []*big.Int) []byte {
+//	var hex_data = ""
+//	for i := range secret {
+//		tmp := fmt.Sprintf("%x", secret[i])
+//		hex_data += strings.Join([]string{strings.Repeat("0", (64 - len(tmp))), tmp}, "")
+//	}
+//
+//	result, _ := hex.DecodeString(hex_data)
+//	result = bytes.TrimLeft(result, "\x00")
+//
+//	return result
+//}
 
 /**
  * Evauluates a polynomial with coefficients specified in reverse order:

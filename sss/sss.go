@@ -114,7 +114,7 @@ func Create2(minimum int, shares int, raw string) ([]string, error) {
 	}
 
 	// Convert the secret to its respective 256-bit big.Int representation
-	var secret []*big.Int = splitByteToInt2([]byte(raw))
+	var secret []*big.Int = splitByteToInt([]byte(raw))
 
 	// List of currently used numbers in the polynomial
 	var numbers []*big.Int = make([]*big.Int, 0)
@@ -144,8 +144,8 @@ func Create2(minimum int, shares int, raw string) ([]string, error) {
 			polynomial[i][j+1] = number
 		}
 	}
-	fmt.Print(polynomial)
-	fmt.Println("")
+	//fmt.Print(polynomial)
+	//fmt.Println("")
 
 	// Create the secrets object; this holds the (x, y) points of each share.
 	// Again, because secret is an array, each share could have multiple parts
@@ -343,7 +343,7 @@ func Combine2(shares []string) (string, error) {
 	}
 
 	// ...and return the result!
-	return string(mergeIntToByte2(secret)), nil
+	return string(mergeIntToByte(secret)), nil
 }
 
 /**
