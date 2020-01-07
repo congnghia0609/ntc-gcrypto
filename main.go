@@ -13,7 +13,7 @@ import (
 /* https://github.com/SSSaaS/sssa-golang */
 func main() {
 	// test1
-	//test1()
+	test1()
 
 	// test2
 	//test2()
@@ -28,7 +28,7 @@ func main() {
 func test1() {
 	// creates a set of shares
 	s := "nghiatcxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-	arr, err := sss.Create(3, 6, s)
+	arr, err := sss.Create(3, 6, s, true)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -43,17 +43,17 @@ func test1() {
 	fmt.Println("\nsecret:", s)
 	fmt.Println("secret.length:", len(s))
 	// combines shares into secret
-	s1, err := sss.Combine(arr[:3])
+	s1, err := sss.Combine(arr[:3], true)
 	fmt.Println("combines shares 1 length =", len(arr[:3]))
 	fmt.Println("secret:", s1)
 	fmt.Println("secret.length:", len(s1))
 
-	s2, err := sss.Combine(arr[3:])
+	s2, err := sss.Combine(arr[3:], true)
 	fmt.Println("combines shares 2 length =", len(arr[3:]))
 	fmt.Println("secret:", s2)
 	fmt.Println("secret.length:", len(s2))
 
-	s3, err := sss.Combine(arr[1:5])
+	s3, err := sss.Combine(arr[1:5], true)
 	fmt.Println("combines shares 3 length =", len(arr[1:5]))
 	fmt.Println("secret:", s3)
 	fmt.Println("secret.length:", len(s3))
@@ -81,7 +81,7 @@ func test2() {
 	fmt.Println("\nsecret:", s)
 	fmt.Println("secret.length:", len(s))
 	// combines shares into secret
-	s1, err := sss.Combine(arr[:3])
+	s1, err := sss.Combine(arr[:3], true)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -89,12 +89,12 @@ func test2() {
 	fmt.Println("secret:", s1)
 	fmt.Println("secret.length:", len(s1))
 
-	s2, err := sss.Combine(arr[3:])
+	s2, err := sss.Combine(arr[3:], true)
 	fmt.Println("combines shares 2 length =", len(arr[3:]))
 	fmt.Println("secret:", s2)
 	fmt.Println("secret.length:", len(s2))
 
-	s3, err := sss.Combine(arr[1:5])
+	s3, err := sss.Combine(arr[1:5], true)
 	fmt.Println("combines shares 3 length =", len(arr[1:5]))
 	fmt.Println("secret:", s3)
 	fmt.Println("secret.length:", len(s3))
@@ -103,7 +103,7 @@ func test2() {
 func test3() {
 	// creates a set of shares
 	s := "nghiatcxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-	arr, err := sss.Create2(3, 6, s)
+	arr, err := sss.Create(3, 6, s, false)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -118,17 +118,17 @@ func test3() {
 	fmt.Println("\nsecret:", s)
 	fmt.Println("secret.length:", len(s))
 	// combines shares into secret
-	s1, err := sss.Combine2(arr[:3])
+	s1, err := sss.Combine(arr[:3], false)
 	fmt.Println("combines shares 1 length =", len(arr[:3]))
 	fmt.Println("secret:", s1)
 	fmt.Println("secret.length:", len(s1))
 
-	s2, err := sss.Combine2(arr[3:])
+	s2, err := sss.Combine(arr[3:], false)
 	fmt.Println("combines shares 2 length =", len(arr[3:]))
 	fmt.Println("secret:", s2)
 	fmt.Println("secret.length:", len(s2))
 
-	s3, err := sss.Combine2(arr[1:5])
+	s3, err := sss.Combine(arr[1:5], false)
 	fmt.Println("combines shares 3 length =", len(arr[1:5]))
 	fmt.Println("secret:", s3)
 	fmt.Println("secret.length:", len(s3))
@@ -157,7 +157,7 @@ func test4() {
 	fmt.Println("\nsecret:", s)
 	fmt.Println("secret.length:", len(s))
 	// combines shares into secret
-	s1, err := sss.Combine2(arr[:3])
+	s1, err := sss.Combine(arr[:3], false)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -165,12 +165,12 @@ func test4() {
 	fmt.Println("secret:", s1)
 	fmt.Println("secret.length:", len(s1))
 
-	s2, err := sss.Combine2(arr[3:])
+	s2, err := sss.Combine(arr[3:], false)
 	fmt.Println("combines shares 2 length =", len(arr[3:]))
 	fmt.Println("secret:", s2)
 	fmt.Println("secret.length:", len(s2))
 
-	s3, err := sss.Combine2(arr[1:5])
+	s3, err := sss.Combine(arr[1:5], false)
 	fmt.Println("combines shares 3 length =", len(arr[1:5]))
 	fmt.Println("secret:", s3)
 	fmt.Println("secret.length:", len(s3))
