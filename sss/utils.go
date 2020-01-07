@@ -41,10 +41,8 @@ func random() *big.Int {
 func splitByteToInt(secret []byte) []*big.Int {
 	hex_data := hex.EncodeToString(secret)
 	count := int(math.Ceil(float64(len(hex_data)) / 64.0))
-	//fmt.Println("secret part count:", count)
 
 	result := make([]*big.Int, count)
-
 	for i := 0; i < count; i++ {
 		if (i+1)*64 < len(hex_data) {
 			result[i], _ = big.NewInt(0).SetString(hex_data[i*64:(i+1)*64], 16)
@@ -56,25 +54,6 @@ func splitByteToInt(secret []byte) []*big.Int {
 
 	return result
 }
-
-//func splitByteToInt2(secret []byte) []*big.Int {
-//	hex_data := hex.EncodeToString(secret)
-//	count := int(math.Ceil(float64(len(hex_data)) / 64.0))
-//	fmt.Println("secret part count:", count)
-//
-//	result := make([]*big.Int, count)
-//
-//	for i := 0; i < count; i++ {
-//		if (i+1)*64 < len(hex_data) {
-//			result[i], _ = big.NewInt(0).SetString(hex_data[i*64:(i+1)*64], 16)
-//		} else {
-//			data := strings.Join([]string{strings.Repeat("0", 64-(len(hex_data)-i*64)), hex_data[i*64:]}, "")
-//			result[i], _ = big.NewInt(0).SetString(data, 16)
-//		}
-//	}
-//
-//	return result
-//}
 
 /**
  * Converts an array of big.Ints to the original byte array, removing any
@@ -92,19 +71,6 @@ func mergeIntToByte(secret []*big.Int) []byte {
 
 	return result
 }
-
-//func mergeIntToByte2(secret []*big.Int) []byte {
-//	var hex_data = ""
-//	for i := range secret {
-//		tmp := fmt.Sprintf("%x", secret[i])
-//		hex_data += strings.Join([]string{strings.Repeat("0", (64 - len(tmp))), tmp}, "")
-//	}
-//
-//	result, _ := hex.DecodeString(hex_data)
-//	result = bytes.TrimLeft(result, "\x00")
-//
-//	return result
-//}
 
 /**
  * Evauluates a polynomial with coefficients specified in reverse order:
@@ -146,7 +112,6 @@ func toBase64(number *big.Int) string {
 	for i := 0; len(hexdata) < 64; i++ {
 		hexdata = "0" + hexdata
 	}
-	//fmt.Println("hexdata:", hexdata)
 	bytedata, success := hex.DecodeString(hexdata)
 	if success != nil {
 		fmt.Println("Error!")
@@ -157,12 +122,15 @@ func toBase64(number *big.Int) string {
 	return base64.URLEncoding.EncodeToString(bytedata)
 }
 
+/**
+ * Returns the big.Int number base10 in Hex representation; note: this is
+ * not a string representation; the Hex output is exactly 256 bits long
+**/
 func toHex(number *big.Int) string {
 	hexdata := fmt.Sprintf("%x", number)
 	for i := 0; len(hexdata) < 64; i++ {
 		hexdata = "0" + hexdata
 	}
-	//fmt.Println("hexdata:", hexdata)
 	return hexdata
 }
 
@@ -188,6 +156,13 @@ func fromBase64(number string) *big.Int {
 	return result
 }
 
+/**
+ * Returns the number Hex in base 10 big.Int representation; note: this is
+ * not coming from a string representation; the Hex input is exactly 256
+ * bits long, and the output is an arbitrary size base 10 integer.
+ *
+ * Returns -1 on failure
+**/
 func fromHex(number string) *big.Int {
 	result, ok := big.NewInt(0).SetString(number, 16)
 	if ok == false {
@@ -211,8 +186,8 @@ func modInverse(number *big.Int) *big.Int {
 	copy.GCD(x, y, pcopy, copy)
 
 	result := big.NewInt(0).Set(PRIME)
-
 	result = result.Add(result, y)
 	result = result.Mod(result, PRIME)
+
 	return result
 }
