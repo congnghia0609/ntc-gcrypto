@@ -1,6 +1,11 @@
 # ntc-gcrypto
 ntc-gcrypto is module golang cryptography  
 
+## Install
+```bash
+go get -u github.com/congnghia0609/ntc-gcrypto
+```
+
 ## 1. An implementation of Shamir's Secret Sharing Algorithm 256-bits in golang
 
 ### Usage

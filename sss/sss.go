@@ -20,7 +20,7 @@ var (
  * created by Shamir's Secret Sharing Algorithm requiring a minimum number of
  * share to recreate, of length shares, from the input secret raw as a string
 **/
-func Create(minimum int, shares int, raw string, isBase64 bool) ([]string, error) {
+func Create(minimum int, shares int, secret string, isBase64 bool) ([]string, error) {
 	// Verify minimum isn't greater than shares; there is no way to recreate
 	// the original polynomial in our current setup, therefore it doesn't make
 	// sense to generate fewer shares than are needed to reconstruct the secrets.
@@ -29,7 +29,7 @@ func Create(minimum int, shares int, raw string, isBase64 bool) ([]string, error
 	}
 
 	// Convert the secrets to its respective 256-bit big.Int representation
-	var secrets []*big.Int = splitByteToInt([]byte(raw))
+	var secrets []*big.Int = splitByteToInt([]byte(secret))
 
 	// List of currently used numbers in the polynomial
 	var numbers []*big.Int = make([]*big.Int, 0)
