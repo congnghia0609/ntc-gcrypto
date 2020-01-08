@@ -73,9 +73,10 @@ func mergeIntToByte(secret []*big.Int) []byte {
 }
 
 /**
- * Evauluates a polynomial with coefficients specified in reverse order:
+ * Evaluates a polynomial with coefficients specified in reverse order:
  * evaluatePolynomial([a, b, c, d], x):
- * 		returns a + bx + cx^2 + dx^3
+ * 		return a + bx + cx^2 + dx^3
+ * Horner's method: ((dx + c)x + b)x + a
 **/
 func evaluatePolynomial(polynomial []*big.Int, value *big.Int) *big.Int {
 	last := len(polynomial) - 1
@@ -112,12 +113,9 @@ func toBase64(number *big.Int) string {
 	for i := 0; len(hexdata) < 64; i++ {
 		hexdata = "0" + hexdata
 	}
-	bytedata, success := hex.DecodeString(hexdata)
-	if success != nil {
-		fmt.Println("Error!")
-		fmt.Println("hexdata: ", hexdata)
-		fmt.Println("bytedata: ", bytedata)
-		fmt.Println(success)
+	bytedata, err := hex.DecodeString(hexdata)
+	if err != nil {
+		fmt.Println(err)
 	}
 	return base64.URLEncoding.EncodeToString(bytedata)
 }

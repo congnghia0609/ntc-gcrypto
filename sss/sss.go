@@ -159,12 +159,12 @@ func Combine(shares []string, isBase64 bool) (string, error) {
 
 			// LPI product: x=0, y = ay * [(x-bx)/(ax-bx)] * ...
 			// multiply together the points (ay)(numerator)(denominator)^-1 ...
-			working := big.NewInt(0).Set(ay)
-			working = working.Mul(working, numerator)
-			working = working.Mul(working, modInverse(denominator))
+			fx := big.NewInt(0).Set(ay)
+			fx = fx.Mul(fx, numerator)
+			fx = fx.Mul(fx, modInverse(denominator))
 
 			// LPI sum: s = fx + fx + ...
-			secrets[j] = secrets[j].Add(secrets[j], working)
+			secrets[j] = secrets[j].Add(secrets[j], fx)
 			secrets[j] = secrets[j].Mod(secrets[j], PRIME)
 		}
 	}
@@ -249,7 +249,7 @@ func DecodeShareHex(shares []string) ([][][]*big.Int, error) {
  * Returns only success/failure (bool)
 **/
 func IsValidShareBase64(candidate string) bool {
-	if len(candidate)%88 != 0 {
+	if len(candidate) == 0 || len(candidate)%88 != 0 {
 		return false
 	}
 	count := len(candidate) / 44
@@ -274,7 +274,7 @@ func IsValidShareBase64(candidate string) bool {
  * Returns only success/failure (bool)
 **/
 func IsValidShareHex(candidate string) bool {
-	if len(candidate)%128 != 0 {
+	if len(candidate) == 0 || len(candidate)%128 != 0 {
 		return false
 	}
 	count := len(candidate) / 64
