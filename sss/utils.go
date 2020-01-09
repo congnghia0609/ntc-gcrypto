@@ -16,7 +16,9 @@ import (
 	"strings"
 )
 
-// PRIME 256-bit big.Int
+// The largest PRIME 256-bit big.Int
+// https://primes.utm.edu/lists/2small/200bit.html
+// PRIME = 2^n - k = 2^256 - 189
 const (
 	DefaultPrimeStr = "115792089237316195423570985008687907853269984665640564039457584007913129639747"
 )
