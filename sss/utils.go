@@ -36,7 +36,7 @@ func random() *big.Int {
 }
 
 /**
- * Converts a byte array into an a 256-bit big.Int, arraied based upon size of
+ * Converts a byte array into an a 256-bit big.Int, array based upon size of
  * the input byte; all values are right-padded to length 256, even if the most
  * significant bit is zero.
 **/

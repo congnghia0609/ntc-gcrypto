@@ -23,6 +23,9 @@ func main() {
 
 	// test4
 	//test4()
+
+	// test5
+	//test5()
 }
 
 func test1() {
@@ -174,4 +177,10 @@ func test4() {
 	fmt.Println("combines shares 3 length =", len(arr[1:5]))
 	fmt.Println("secret:", s3)
 	fmt.Println("secret.length:", len(s3))
+}
+
+func test5() {
+	//a,_ := big.NewInt(0).SetString("67356225285819719212258382314594931188352598651646313425411610888829358649431", 10)
+	//v := sss.ModInverse(a)
+	//print("v: ", v.String())
 }
