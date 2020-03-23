@@ -16,13 +16,13 @@ func main() {
 	test1()
 
 	// test2
-	//test2()
+	test2()
 
 	// test3
 	test3()
 
 	// test4
-	//test4()
+	test4()
 
 	// test5
 	//test5()
@@ -38,10 +38,10 @@ func test1() {
 	//fmt.Println(arr)
 	//json_arr, _ := json.Marshal(arr)
 	//fmt.Println(string(json_arr))
-	fmt.Println("\nshares.size:", len(arr))
-	for i:=0; i<len(arr); i++ {
-		fmt.Printf("shares[%d]: %s\n", i, arr[i])
-	}
+	//fmt.Println("\nshares.size:", len(arr))
+	//for i:=0; i<len(arr); i++ {
+	//	fmt.Printf("shares[%d]: %s\n", i, arr[i])
+	//}
 
 	fmt.Println("\nsecret:", s)
 	fmt.Println("secret.length:", len(s))
@@ -76,10 +76,10 @@ func test2() {
 	//fmt.Println(arr)
 	//json_arr, _ := json.Marshal(arr)
 	//fmt.Println(string(json_arr))
-	fmt.Println("\nshares.size:", len(arr))
-	for i:=0; i<len(arr); i++ {
-		fmt.Printf("shares[%d]: %s\n", i, arr[i])
-	}
+	//fmt.Println("\nshares.size:", len(arr))
+	//for i:=0; i<len(arr); i++ {
+	//	fmt.Printf("shares[%d]: %s\n", i, arr[i])
+	//}
 
 	fmt.Println("\nsecret:", s)
 	fmt.Println("secret.length:", len(s))
@@ -113,10 +113,10 @@ func test3() {
 	//fmt.Println(arr)
 	//json_arr, _ := json.Marshal(arr)
 	//fmt.Println(string(json_arr))
-	fmt.Println("\nshares.size:", len(arr))
-	for i:=0; i<len(arr); i++ {
-		fmt.Printf("shares[%d]: %s\n", i, arr[i])
-	}
+	//fmt.Println("\nshares.size:", len(arr))
+	//for i:=0; i<len(arr); i++ {
+	//	fmt.Printf("shares[%d]: %s\n", i, arr[i])
+	//}
 
 	fmt.Println("\nsecret:", s)
 	fmt.Println("secret.length:", len(s))
@@ -152,10 +152,10 @@ func test4() {
 	//fmt.Println(arr)
 	//json_arr, _ := json.Marshal(arr)
 	//fmt.Println(string(json_arr))
-	fmt.Println("\nshares.size:", len(arr))
-	for i:=0; i<len(arr); i++ {
-		fmt.Printf("shares[%d]: %s\n", i, arr[i])
-	}
+	//fmt.Println("\nshares.size:", len(arr))
+	//for i:=0; i<len(arr); i++ {
+	//	fmt.Printf("shares[%d]: %s\n", i, arr[i])
+	//}
 
 	fmt.Println("\nsecret:", s)
 	fmt.Println("secret.length:", len(s))

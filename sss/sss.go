@@ -256,7 +256,7 @@ func IsValidShareBase64(candidate string) bool {
 	for j := 0; j < count; j++ {
 		part := candidate[j*44 : (j+1)*44]
 		decode := fromBase64(part)
-		if decode.Cmp(big.NewInt(0)) == -1 || decode.Cmp(PRIME) == 1 {
+		if decode.Cmp(big.NewInt(0)) <= 0 || decode.Cmp(PRIME) >= 0 {
 			return false
 		}
 	}
@@ -281,7 +281,7 @@ func IsValidShareHex(candidate string) bool {
 	for j := 0; j < count; j++ {
 		part := candidate[j*64 : (j+1)*64]
 		decode := fromHex(part)
-		if decode.Cmp(big.NewInt(0)) == -1 || decode.Cmp(PRIME) == 1 {
+		if decode.Cmp(big.NewInt(0)) <= 0 || decode.Cmp(PRIME) >= 0 {
 			return false
 		}
 	}
