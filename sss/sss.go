@@ -11,8 +11,8 @@ import (
 )
 
 var (
-	ErrCannotRequireMoreShares = errors.New("cannot require more shares then existing")
-	ErrOneOfTheSharesIsInvalid = errors.New("one of the shares is invalid")
+	errCannotRequireMoreShares = errors.New("cannot require more shares then existing")
+	errOneOfTheSharesIsInvalid = errors.New("one of the shares is invalid")
 )
 
 /**
@@ -25,7 +25,7 @@ func Create(minimum int, shares int, secret string, isBase64 bool) ([]string, er
 	// the original polynomial in our current setup, therefore it doesn't make
 	// sense to generate fewer shares than are needed to reconstruct the secrets.
 	if minimum > shares {
-		return []string{""}, ErrCannotRequireMoreShares
+		return []string{""}, errCannotRequireMoreShares
 	}
 
 	// Convert the secrets to its respective 256-bit big.Int representation
@@ -121,9 +121,9 @@ func Combine(shares []string, isBase64 bool) (string, error) {
 	// points[shares][parts][2]
 	var points [][][]*big.Int
 	if isBase64 {
-		points, _ = DecodeShareBase64(shares)
+		points, _ = decodeShareBase64(shares)
 	} else {
-		points, _ = DecodeShareHex(shares)
+		points, _ = decodeShareHex(shares)
 	}
 
 	// Use Lagrange Polynomial Interpolation (LPI) to reconstruct the secrets.
@@ -176,7 +176,7 @@ func Combine(shares []string, isBase64 bool) (string, error) {
 // Takes a string array of shares encoded in Base64 created via Shamir's
 // Algorithm; each string must be of equal length of a multiple of 88 characters
 // as a single 88 character share is a pair of 256-bit numbers (x, y).
-func DecodeShareBase64(shares []string) ([][][]*big.Int, error) {
+func decodeShareBase64(shares []string) ([][][]*big.Int, error) {
 	// Recreate the original object of x, y points, based upon number of shares
 	// and size of each share (number of parts in the secret).
 	var secrets [][][]*big.Int = make([][][]*big.Int, len(shares))
@@ -184,8 +184,8 @@ func DecodeShareBase64(shares []string) ([][][]*big.Int, error) {
 	// For each share...
 	for i := range shares {
 		// ensure that it is valid.
-		if IsValidShareBase64(shares[i]) == false {
-			return nil, ErrOneOfTheSharesIsInvalid
+		if isValidShareBase64(shares[i]) == false {
+			return nil, errOneOfTheSharesIsInvalid
 		}
 
 		// find the number of parts it represents.
@@ -209,7 +209,7 @@ func DecodeShareBase64(shares []string) ([][][]*big.Int, error) {
 // Takes a string array of shares encoded in Hex created via Shamir's
 // Algorithm; each string must be of equal length of a multiple of 128 characters
 // as a single 128 character share is a pair of 256-bit numbers (x, y).
-func DecodeShareHex(shares []string) ([][][]*big.Int, error) {
+func decodeShareHex(shares []string) ([][][]*big.Int, error) {
 	// Recreate the original object of x, y points, based upon number of shares
 	// and size of each share (number of parts in the secret).
 	var secrets [][][]*big.Int = make([][][]*big.Int, len(shares))
@@ -217,8 +217,8 @@ func DecodeShareHex(shares []string) ([][][]*big.Int, error) {
 	// For each share...
 	for i := range shares {
 		// ensure that it is valid.
-		if IsValidShareHex(shares[i]) == false {
-			return nil, ErrOneOfTheSharesIsInvalid
+		if isValidShareHex(shares[i]) == false {
+			return nil, errOneOfTheSharesIsInvalid
 		}
 
 		// find the number of parts it represents.
@@ -248,7 +248,7 @@ func DecodeShareHex(shares []string) ([][][]*big.Int, error) {
  *
  * Returns only success/failure (bool)
 **/
-func IsValidShareBase64(candidate string) bool {
+func isValidShareBase64(candidate string) bool {
 	if len(candidate) == 0 || len(candidate)%88 != 0 {
 		return false
 	}
@@ -273,7 +273,7 @@ func IsValidShareBase64(candidate string) bool {
  *
  * Returns only success/failure (bool)
 **/
-func IsValidShareHex(candidate string) bool {
+func isValidShareHex(candidate string) bool {
 	if len(candidate) == 0 || len(candidate)%128 != 0 {
 		return false
 	}
