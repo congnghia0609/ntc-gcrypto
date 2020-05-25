@@ -15,17 +15,21 @@ var (
 	errOneOfTheSharesIsInvalid = errors.New("one of the shares is invalid")
 )
 
-/**
- * Returns a new array of secret shares (encoding x,y pairs as Base64 or Hex strings)
- * created by Shamir's Secret Sharing Algorithm requiring a minimum number of
- * share to recreate, of length shares, from the input secret raw as a string
-**/
+// Returns a new array of secret shares (encoding x,y pairs as Base64 or Hex strings)
+// created by Shamir's Secret Sharing Algorithm requiring a minimum number of
+// share to recreate, of length shares, from the input secret raw as a string
 func Create(minimum int, shares int, secret string, isBase64 bool) ([]string, error) {
 	// Verify minimum isn't greater than shares; there is no way to recreate
 	// the original polynomial in our current setup, therefore it doesn't make
 	// sense to generate fewer shares than are needed to reconstruct the secrets.
+	if minimum <= 0 || shares <= 0 {
+		return []string{""}, errors.New("minimum or shares is invalid")
+	}
 	if minimum > shares {
 		return []string{""}, errCannotRequireMoreShares
+	}
+	if len(secret) == 0 {
+		return []string{""}, errors.New("secret is empty")
 	}
 
 	// Convert the secrets to its respective 256-bit big.Int representation
@@ -68,53 +72,47 @@ func Create(minimum int, shares int, secret string, isBase64 bool) ([]string, er
 	//
 	// Note: this array is technically unnecessary due to creating result
 	// in the inner loop. Can disappear later if desired.
-	//
-	// points[shares][parts][2]
-	var points [][][]*big.Int = make([][][]*big.Int, shares)
 	var result []string = make([]string, shares)
 
 	// For every share...
-	for i := range points {
-		points[i] = make([][]*big.Int, len(secrets))
+	len := len(secrets)
+	for i := 0; i < shares; i++ {
 		// and every part of the secrets...
-		for j := range points[i] {
-			points[i][j] = make([]*big.Int, 2)
-
+		for j := 0; j < len; j++ {
 			// generate a new x-coordinate.
-			number := random()
-			for inNumbers(numbers, number) {
-				number = random()
+			x := random()
+			for inNumbers(numbers, x) {
+				x = random()
 			}
-			numbers = append(numbers, number)
+			numbers = append(numbers, x)
 
 			// and evaluate the polynomial at that point.
-			points[i][j][0] = number
-			points[i][j][1] = evaluatePolynomial(polynomial[j], number)
+			y := evaluatePolynomial(polynomial[j], x)
 
 			// add it to results.
 			if isBase64 {
-				result[i] += toBase64(points[i][j][0])
-				result[i] += toBase64(points[i][j][1])
+				result[i] += toBase64(x)
+				result[i] += toBase64(y)
 			} else {
-				result[i] += toHex(points[i][j][0])
-				result[i] += toHex(points[i][j][1])
+				result[i] += toHex(x)
+				result[i] += toHex(y)
 			}
-			//fmt.Printf("x[share-%d][part-%d]: %s\n", i, j, points[i][j][0].String())
-			//fmt.Printf("y[share-%d][part-%d]: %s\n", i, j, points[i][j][1].String())
 		}
 	}
 
 	return result, nil
 }
 
-/**
- * Takes a string array of shares encoded in Base64 or Hex created via Shamir's Algorithm;
- *
- * Note: the polynomial will converge if the specified minimum number of shares
- *       or more are passed to this function. Passing thus does not affect it
- *       Passing fewer however, simply means that the returned secret is wrong.
-**/
+// Takes a string array of shares encoded in Base64 or Hex created via Shamir's Algorithm;
+//
+// Note: the polynomial will converge if the specified minimum number of shares
+//       or more are passed to this function. Passing thus does not affect it
+//       Passing fewer however, simply means that the returned secret is wrong.
 func Combine(shares []string, isBase64 bool) (string, error) {
+	if len(shares) == 0 {
+		return "", errors.New("shares is empty")
+	}
+
 	// Recreate the original object of x, y points, based upon number of shares
 	// and size of each share (number of parts in the secrets).
 	//
@@ -239,15 +237,13 @@ func decodeShareHex(shares []string) ([][][]*big.Int, error) {
 	return secrets, nil
 }
 
-/**
- * Takes in a given string to check if it is a valid secret
- *
- * Requirements:
- * 	Length multiple of 88
- *	Can decode each 44 character block as Base64
- *
- * Returns only success/failure (bool)
-**/
+// Takes in a given string to check if it is a valid secret
+//
+// Requirements:
+// 	Length multiple of 88
+//	Can decode each 44 character block as Base64
+//
+// Returns only success/failure (bool)
 func isValidShareBase64(candidate string) bool {
 	if len(candidate) == 0 || len(candidate)%88 != 0 {
 		return false
@@ -264,15 +260,13 @@ func isValidShareBase64(candidate string) bool {
 	return true
 }
 
-/**
- * Takes in a given string to check if it is a valid secret
- *
- * Requirements:
- * 	Length multiple of 128
- *	Can decode each 64 character block as Hex
- *
- * Returns only success/failure (bool)
-**/
+// Takes in a given string to check if it is a valid secret
+//
+// Requirements:
+// 	Length multiple of 128
+//	Can decode each 64 character block as Hex
+//
+// Returns only success/failure (bool)
 func isValidShareHex(candidate string) bool {
 	if len(candidate) == 0 || len(candidate)%128 != 0 {
 		return false
