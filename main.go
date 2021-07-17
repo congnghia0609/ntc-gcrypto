@@ -7,7 +7,7 @@ package main
 
 import (
 	"fmt"
-	"ntc-gcrypto/sss"
+	"github.com/congnghia0609/ntc-gcrypto/sss"
 )
 
 /* https://github.com/SSSaaS/sssa-golang */
