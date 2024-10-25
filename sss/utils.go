@@ -22,8 +22,9 @@ import (
 const (
 	DefaultPrimeStr = "115792089237316195423570985008687907853269984665640564039457584007913129639747"
 )
+
 // var PRIME *big.Int
-var PRIME,_ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
+var PRIME, _ = big.NewInt(0).SetString(DefaultPrimeStr, 10)
 
 // Returns a random number from the range (0, PRIME-1) inclusive
 func random() *big.Int {
@@ -69,7 +70,9 @@ func mergeIntToByte(secret []*big.Int) []byte {
 
 // Evaluates a polynomial with coefficients specified in reverse order:
 // evaluatePolynomial([a, b, c, d], x):
-// 		return a + bx + cx^2 + dx^3
+//
+//	return a + bx + cx^2 + dx^3
+//
 // Horner's method: ((dx + c)x + b)x + a
 func evaluatePolynomial(polynomial []*big.Int, value *big.Int) *big.Int {
 	last := len(polynomial) - 1
@@ -131,7 +134,7 @@ func fromBase64(number string) *big.Int {
 	}
 	hexdata := hex.EncodeToString(bytedata)
 	result, ok := big.NewInt(0).SetString(hexdata, 16)
-	if ok == false {
+	if !ok {
 		return big.NewInt(-1)
 	}
 
@@ -145,7 +148,7 @@ func fromBase64(number string) *big.Int {
 // Returns -1 on failure
 func fromHex(number string) *big.Int {
 	result, ok := big.NewInt(0).SetString(number, 16)
-	if ok == false {
+	if !ok {
 		return big.NewInt(-1)
 	}
 

@@ -106,8 +106,9 @@ func Create(minimum int, shares int, secret string, isBase64 bool) ([]string, er
 // Takes a string array of shares encoded in Base64 or Hex created via Shamir's Algorithm;
 //
 // Note: the polynomial will converge if the specified minimum number of shares
-//       or more are passed to this function. Passing thus does not affect it
-//       Passing fewer however, simply means that the returned secret is wrong.
+//
+//	or more are passed to this function. Passing thus does not affect it
+//	Passing fewer however, simply means that the returned secret is wrong.
 func Combine(shares []string, isBase64 bool) (string, error) {
 	if len(shares) == 0 {
 		return "", errors.New("shares is empty")
@@ -182,7 +183,7 @@ func decodeShareBase64(shares []string) ([][][]*big.Int, error) {
 	// For each share...
 	for i := range shares {
 		// ensure that it is valid.
-		if isValidShareBase64(shares[i]) == false {
+		if !isValidShareBase64(shares[i]) {
 			return nil, errOneOfTheSharesIsInvalid
 		}
 
@@ -215,7 +216,7 @@ func decodeShareHex(shares []string) ([][][]*big.Int, error) {
 	// For each share...
 	for i := range shares {
 		// ensure that it is valid.
-		if isValidShareHex(shares[i]) == false {
+		if !isValidShareHex(shares[i]) {
 			return nil, errOneOfTheSharesIsInvalid
 		}
 
@@ -240,7 +241,8 @@ func decodeShareHex(shares []string) ([][][]*big.Int, error) {
 // Takes in a given string to check if it is a valid secret
 //
 // Requirements:
-// 	Length multiple of 88
+//
+//	Length multiple of 88
 //	Can decode each 44 character block as Base64
 //
 // Returns only success/failure (bool)
@@ -263,7 +265,8 @@ func isValidShareBase64(candidate string) bool {
 // Takes in a given string to check if it is a valid secret
 //
 // Requirements:
-// 	Length multiple of 128
+//
+//	Length multiple of 128
 //	Can decode each 64 character block as Hex
 //
 // Returns only success/failure (bool)
