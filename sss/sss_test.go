@@ -136,3 +136,69 @@ func TestCombineHex(t *testing.T) {
 		t.Errorf(err.Error())
 	}
 }
+
+func TestEncodeDecodeBase64UrlWithSpecialCases(t *testing.T) {
+	// Test create & combine Base64Url with special cases: not Latin symbols (Ex: Cyrillic)
+	// creates a set of shares
+	s := "бар" // Cyrillic
+	arr, err := Create(3, 6, s, true)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	if len(arr) != 6 {
+		t.Errorf("Create shares: FAIL")
+	}
+
+	// combines shares into secret
+	s1, err := Combine(arr[:3], true)
+	if s1 != s {
+		t.Errorf("combines shares 1 length = 3: FAIL")
+	}
+
+	s2, err := Combine(arr[3:], true)
+	if s2 != s {
+		t.Errorf("combines shares 2 length = 3: FAIL")
+	}
+
+	s3, err := Combine(arr[1:5], true)
+	if s3 != s {
+		t.Errorf("combines shares 3 length = 4: FAIL")
+	}
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+}
+
+func TestEncodeDecodeHexWithSpecialCases(t *testing.T) {
+	// Test create & combine Hex with special cases: not Latin symbols (Ex: Cyrillic)
+	// creates a set of shares
+	s := "бар" // Cyrillic
+	arr, err := Create(3, 6, s, false)
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+	if len(arr) != 6 {
+		t.Errorf("Create shares: FAIL")
+	}
+
+	// combines shares into secret
+	s1, err := Combine(arr[:3], false)
+	if s1 != s {
+		t.Errorf("combines shares 1 length = 3: FAIL")
+	}
+
+	s2, err := Combine(arr[3:], false)
+	if s2 != s {
+		t.Errorf("combines shares 2 length = 3: FAIL")
+	}
+
+	s3, err := Combine(arr[1:5], false)
+	if s3 != s {
+		t.Errorf("combines shares 3 length = 4: FAIL")
+	}
+
+	if err != nil {
+		t.Errorf(err.Error())
+	}
+}
